@@ -40,4 +40,8 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Student::class);
     }
+    public function token_management()
+    {
+        return $this->hasMany(TokenManagement::class);
+    }
 }

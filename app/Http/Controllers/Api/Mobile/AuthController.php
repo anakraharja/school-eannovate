@@ -39,13 +39,21 @@ class AuthController extends Controller
             ],400);
         }
         $token_session = TokenManagement::where('created_by',$admin->id)->first();
-        if(!empty($token_session) && strtotime($token_session->expired_at) > time() || $token_session->active != 1){
-            return response()->json([
-                'status' => 400,
-                'message' => 'Authorization access still logged in!',
-            ],400);
+        if($token_session){
+            if(strtotime($token_session->expired_at) > time() || $token_session->active != 1){
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Authorization access still logged in!',
+                    'data' => [
+                        "id" => $admin->id,
+                        "username" => $admin->username,
+                        "email" => $admin->email,
+                        'token' => $token_session->access_token
+                    ]
+                ],400);
+            }
+            $token_session->delete();
         }
-        $token_session->delete();
         $token = $this->generate_token($admin, 80);
         $response = [
             'id' => $admin->id,

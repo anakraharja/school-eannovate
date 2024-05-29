@@ -17,4 +17,9 @@ class TokenManagement extends Model
     protected $fillable = [
         'created_by', 'access_token', 'expired_at', 'active'
     ];
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 }
