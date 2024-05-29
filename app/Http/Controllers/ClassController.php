@@ -12,7 +12,7 @@ class ClassController extends Controller
     public function index()
     {
         $client = new Client();
-        $base_uri = 'http://school-eannovate.test/api/mobile/class';
+        $base_uri = 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class';
         $response = $client->request('GET', $base_uri);
         return view('class.index',[
             'title' => 'Class',
@@ -32,7 +32,7 @@ class ClassController extends Controller
     public function edit($id)
     {
         $client = new Client();
-        $base_uri = 'http://school-eannovate.test/api/mobile/class/'.$id;
+        $base_uri = 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class/'.$id;
         $response = $client->request('GET', $base_uri);
         return view('class.edit',[
             'title' => 'Class',

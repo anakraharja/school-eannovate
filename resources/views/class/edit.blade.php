@@ -54,7 +54,7 @@ $(document).ready(function(){
     $('#form').on('submit',function(e){
         e.preventDefault();
         $.ajax({
-            url: 'http://school-eannovate.test/api/mobile/class/'+{{ $class["id"] }},
+            url: 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class/'+{{ $class["id"] }},
             type: "PUT",
             cache: false,
             data: {

@@ -24,7 +24,7 @@ class StudentController extends Controller
     public function create()
     {
         $client = new Client();
-        $base_uri = 'http://school-eannovate.test/api/mobile/class';
+        $base_uri = 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class';
         $response = $client->request('GET', $base_uri);
         return view('student.create',[
             'title' => 'Student',
@@ -73,7 +73,7 @@ class StudentController extends Controller
     public function edit($id)
     {
         $client = new Client();
-        $base_uri = 'http://school-eannovate.test/api/mobile/class';
+        $base_uri = 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class';
         $response = $client->request('GET', $base_uri);
         $student = Student::findOrFail($id);
         return view('student.edit',[

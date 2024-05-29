@@ -58,7 +58,7 @@ $('#datatable-class').DataTable({
 function destroy(id){
     // Delete
     $.ajax({
-        url: 'http://school-eannovate.test/api/mobile/class/'+id,
+        url: 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class/'+id,
         type: "DELETE",
         cache: false,
         data: {"_token": "{{ csrf_token() }}"},
