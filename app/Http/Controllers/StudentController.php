@@ -97,7 +97,7 @@ class StudentController extends Controller
         if ($validator->fails()) {
             return back()->with('error', 'Failed update data student!')->withErrors($validator)->withInput();
         }
-        if($request->has('class')){
+        if($request->has('class') > 0){
             foreach ($request->class as $val) {
                 if($student_class = StudentClassRoom::with('class')->where('student_id',$id)->where('class_id',$val)->first()){
                     return back()->with('error','The '.$student_class->class->name.' is already exists!')->withInput();

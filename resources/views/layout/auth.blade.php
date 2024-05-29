@@ -26,10 +26,12 @@
                             <form action="{{ route('store-login') }}" method="POST" class="user">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="text" name="username" class="form-control form-control-user" placeholder="Username">
+                                    <input type="text" name="username" class="form-control form-control-user @error('username') is-invalid @enderror" value="{{ @old('username') }}" placeholder="Username">
+                                    @error('username')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" class="form-control form-control-user" placeholder="Password">
+                                    <input type="password" name="password" class="form-control form-control-user @error('password') is-invalid @enderror" placeholder="Password">
+                                    @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
                                     <i class="fas fa-sign-in-alt mr-1"></i> Login
