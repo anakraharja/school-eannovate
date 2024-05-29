@@ -75,7 +75,7 @@ class StudentController extends Controller
         $client = new Client();
         $base_uri = 'http://school-eannovate.mochamadmaulana.my.id/api/mobile/class';
         $response = $client->request('GET', $base_uri);
-        $student = Student::findOrFail($id);
+        $student = Student::with('student_class.class')->findOrFail($id);
         return view('student.edit',[
             'title' => 'Student',
             'icon' => 'fa-user-graduate',
@@ -86,6 +86,7 @@ class StudentController extends Controller
 
     public function update(Request $request, $id)
     {
+        dd($request->has('class'));
         $validator = Validator::make($request->all(), [
             'username' => ['required',"max:64"],
             'email' => ['required',"max:64","email","unique:student,email,".$id.",id"],
@@ -96,17 +97,19 @@ class StudentController extends Controller
         if ($validator->fails()) {
             return back()->with('error', 'Failed update data student!')->withErrors($validator)->withInput();
         }
-        foreach ($request->class as $val) {
-            if($student_class = StudentClassRoom::with('class')->where('student_id',$id)->where('class_id',$val)->first()){
-                return back()->with('error','The '.$student_class->class->name.' is already exists!')->withInput();
+        if($request->has('class')){
+            foreach ($request->class as $val) {
+                if($student_class = StudentClassRoom::with('class')->where('student_id',$id)->where('class_id',$val)->first()){
+                    return back()->with('error','The '.$student_class->class->name.' is already exists!')->withInput();
+                }
             }
-        }
-        foreach ($request->class as $result) {
-            StudentClassRoom::create([
-                'student_id' => $id,
-                'class_id' => $result,
-                'created_by' => auth()->user()->id
-            ]);
+            foreach ($request->class as $result) {
+                StudentClassRoom::create([
+                    'student_id' => $id,
+                    'class_id' => $result,
+                    'created_by' => auth()->user()->id
+                ]);
+            }
         }
         $student = Student::findOrFail($id);
         $data = [
@@ -173,10 +176,8 @@ class StudentController extends Controller
 
     public function student_class($id)
     {
-        $student_class = StudentClassRoom::with('class')->where('student_id',$id)->get();
-        return response()->json([
-            'status' => 200,
-            'data' => $student_class
-        ]);
+        $student_class = StudentClassRoom::findOrFail($id);
+        $student_class->delete();
+        return back()->with('success','Class successfully deleted');
     }
 }

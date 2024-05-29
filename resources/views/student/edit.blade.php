@@ -49,7 +49,9 @@
                     <div class="form-group">
                         <label>
                             Class
-                            <sup><a href="javascript:void(0)" class="badge badge-primary ml-1" onclick="showClass({{ $student->id }})"><i class="fas fa-eye"></i> Class already axists</a></sup>
+                            @if (count($student->student_class) > 0)
+                            <sup><a href="javascript:void(0)" class="badge badge-primary ml-1" data-toggle="modal" data-target="#showClassModal"><i class="fas fa-eye"></i> Class already axists</a></sup>
+                            @endif
                         </label>
                         <select name="class[]" class="form-control @if(session('error')) is-invalid @endif" multiple>
                             @foreach ($class as $val_c)
@@ -98,7 +100,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <ol class="display-class"></ol>
+                <ol class="display-class">
+                    @foreach ($student->student_class as $val)
+                        <li>
+                            {{ $val->class->name }} ({{ $val->class->major }})
+                            <a href="{{ route('student-class',$val->id) }}" class="badge badge-danger ml-1"><i class="fas fa-trash"></i></a>
+                        </li>
+                    @endforeach
+                </ol>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeClass()">Close</button>
@@ -110,22 +119,6 @@
 
 @section('js')
 <script>
-function showClass(id){
-    $.ajax({
-        url: '/student-class/'+id,
-        type: 'GET',
-        dataType: 'json',
-        success:function(response){
-            $('#showClassModal').modal('show');
-            $.each(response.data, function(key, data){
-                $('.display-class').append('<li>'+data.class.name+' ('+data.class.major+')</li>')
-            });
-        },
-    });
-}
-function closeClass(){
-    $('.display-class').find('li').remove()
-}
 $(document).ready(function(){
     setTimeout(function() {
         $('.alert-success').remove()
