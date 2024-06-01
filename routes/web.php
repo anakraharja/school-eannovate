@@ -12,4 +12,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('student', 'StudentController')->except('show');
     Route::get('student-class/{class}', 'StudentController@student_class')->name('student-class');
     Route::get('student/destroy-picture/{student}', 'StudentController@destroy_picture')->name('student.destroy-picture');
+    Route::delete('student-multiple-delete', 'StudentController@multiple_delete')->name('student.destroy-multiple');
 });

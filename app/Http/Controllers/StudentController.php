@@ -179,4 +179,12 @@ class StudentController extends Controller
         $student_class->delete();
         return back()->with('success','Class successfully deleted');
     }
+
+    public function multiple_delete(Request $request)
+    {
+        $idSelected = $request->id;
+        Student::whereIn('id',$idSelected)->delete();
+        session()->flash('success','Success delete data selected');
+        return response()->json(['success'=>true]);
+    }
 }
